@@ -9,6 +9,7 @@ raven.contrib.django.utils
 from __future__ import absolute_import
 
 from django.conf import settings
+from django.template import loader as template_loader
 
 
 def linebreak_iter(template_source):
@@ -40,18 +41,23 @@ def get_data_from_template(source):
     post_context = source_lines[(lineno + 1):(lineno + 4)]
     context_line = source_lines[lineno]
 
+    if isinstance(origin, template_loader.LoaderOrigin):
+        name = origin.loadname
+    else:
+        name = origin.name
+
     return {
         'sentry.interfaces.Template': {
-            'filename': origin.loadname,
+            'filename': name,
             'abs_path': origin.name,
             'pre_context': pre_context,
             'context_line': context_line,
             'lineno': lineno,
             'post_context': post_context,
+            'abs_path': origin.name,
         },
-        'culprit': origin.loadname,
+        'culprit': name,
     }
-
 
 def get_host(request):
     """

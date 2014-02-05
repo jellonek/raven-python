@@ -29,4 +29,5 @@ urlpatterns = patterns('tests.contrib.django.views',
     url(r'^trigger-500-django$', 'django_exc', name='sentry-django-exc'),
     url(r'^trigger-500-template$', 'template_exc', name='sentry-template-exc'),
     url(r'^trigger-500-log-request$', 'logging_request_exc', name='sentry-log-request-exc'),
+    url(r'^trigger-500-string-template', 'string_template_exc', name='sentry-string-template-exc'),
 )

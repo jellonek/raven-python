@@ -325,6 +325,14 @@ class DjangoClientTest(TestCase):
 
         self.assertEquals(event['culprit'], 'error.html')
 
+    def test_rendering_string_template(self):
+        self.assertRaises(TemplateSyntaxError, self.client.get, reverse('sentry-string-template-exc'))
+
+        self.assertEquals(len(self.raven.events), 1)
+        event = self.raven.events.pop(0)
+
+        self.assertEquals(event['culprit'], '<unknown source>')
+
     # def test_request_in_logging(self):
     #     resp = self.client.get(reverse('sentry-log-request-exc'))
     #     self.assertEquals(resp.status_code, 200)

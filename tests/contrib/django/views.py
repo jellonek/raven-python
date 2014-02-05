@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from django.http import HttpResponse
+from django import template
 from django.shortcuts import get_object_or_404, render_to_response
 
 import logging
@@ -33,3 +34,7 @@ def logging_request_exc(request):
     except Exception as e:
         logger.error(e, exc_info=True, extra={'request': request})
     return HttpResponse('')
+
+def string_template_exc(request):
+    return HttpResponse(template.Template('{% should raise error %}').render(
+        template.Context()))
